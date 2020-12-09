@@ -1,0 +1,18 @@
+.header__logout-button {
+  background-color: black;
+  margin-left: 28px;
+  padding: 0;
+  border: 0;
+  color: white;
+  height: 58px;
+
+  cursor: url('https://raw.githubusercontent.com/OlegBrekalo/mesto/master/images/bttn-cursor.png'),
+    url('../../../images/bttn-cursor.png'), pointer;
+  transition: opacity 1s linear;
+
+  color: #a9a9a9;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 22px;
+}

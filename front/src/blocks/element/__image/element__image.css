@@ -1,0 +1,9 @@
+.element__image{
+  width: 100%;
+  height: 282px;
+
+  object-fit: cover;
+  object-position: top;
+
+  cursor: url('https://raw.githubusercontent.com/OlegBrekalo/mesto/master/images/bttn-cursor.png'), url('../../../images/bttn-cursor.png'), pointer;
+}

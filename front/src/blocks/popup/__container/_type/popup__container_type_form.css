@@ -1,0 +1,17 @@
+.popup__container_type_form {
+  justify-content: flex-start;
+  align-content: start;
+  width: 430px;
+  border-radius: 3%;
+
+  background-color: white;
+}
+
+@media screen and (max-width: 530px) {
+  .popup__container_type_form {
+    margin-top: 90px;
+    width: 240px;
+    min-height: 252px;
+    max-height: 350px;
+  }
+}

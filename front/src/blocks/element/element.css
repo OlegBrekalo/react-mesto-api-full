@@ -1,0 +1,7 @@
+.element{
+  position: relative;
+
+  border-radius: 3%;
+  overflow: hidden;
+  font-size: 0;
+}

@@ -1,0 +1,8 @@
+.form__input-text_type_login {
+  border-bottom: 2px solid white;
+  background-color: black;
+  color: white;
+
+  padding-bottom: 0;
+  margin-bottom: 6px;
+}

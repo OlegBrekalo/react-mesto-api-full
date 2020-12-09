@@ -1,0 +1,11 @@
+.popup__container_type_inform {
+  justify-content: flex-start;
+  align-items: center;
+
+  margin-top: -61px;
+  height: 330px;
+  width: 430px;
+  border-radius: 3%;
+
+  background-color: white;
+}

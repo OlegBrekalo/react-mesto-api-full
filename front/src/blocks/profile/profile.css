@@ -1,0 +1,31 @@
+.profile{
+  display: grid;
+  grid-template-columns: 120px 1fr 150px;
+  grid-template-areas:
+              "avatar profile-info add-bttn";
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 30px;
+}
+
+
+@media screen and (max-width: 930px){
+  .profile{
+    grid-template-columns: 120px 1fr;
+    grid-template-areas:
+                "avatar profile-info"
+                "add-bttn fill";
+    grid-row-gap: 10px;
+  }
+}
+
+
+@media screen and (max-width: 750px){
+  .profile{
+    display: flex;
+    flex-direction: column;
+
+    grid-template-areas: none;
+  }
+}
+

@@ -1,0 +1,12 @@
+.content-section{
+  width: 73.5%;
+  max-width: 883.2px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media screen and (max-width: 750px){
+  .content-section{
+    width: 88.5%;
+  }
+}

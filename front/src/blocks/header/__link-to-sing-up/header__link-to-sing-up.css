@@ -1,0 +1,16 @@
+.header__link-to-sing-up {
+  margin-top: 19px;
+
+  text-decoration: none;
+  color: #a9a9a9;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 22px;
+
+  transition: opacity 1s linear;
+}
+
+.header__link-to-sing-up:hover {
+  opacity: 0.5;
+}

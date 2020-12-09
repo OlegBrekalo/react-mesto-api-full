@@ -1,0 +1,8 @@
+.form__label {
+  display: flex;
+  flex-direction: column;
+}
+
+.form__label:nth-child(2) {
+  margin-top: 13px;
+}

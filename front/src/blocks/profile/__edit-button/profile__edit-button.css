@@ -1,0 +1,37 @@
+.profile__edit-button{
+  background: transparent;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  grid-area: edit-bttn;
+
+  align-self: end;
+  justify-self: start;
+
+  cursor: url('https://raw.githubusercontent.com/OlegBrekalo/mesto/master/images/bttn-cursor.png'), url('../../../images/bttn-cursor.png'), pointer;
+  transition: opacity 1s linear;
+
+  width: 24px;
+  height: 24px;
+
+  box-sizing: border-box;
+  border: 1px solid white;
+  background-image: url('../../../images/edit-icon.svg');
+  background-size: 10px;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-bottom: 18px;
+}
+
+.profile__edit-button:hover{
+  opacity: .5;
+}
+
+@media screen and (max-width: 750px){
+  .profile__edit-button{
+    width: 18px;
+    height: 18px;
+    margin-bottom: 15px;
+
+  }
+}

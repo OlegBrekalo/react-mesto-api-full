@@ -1,0 +1,5 @@
+.profile__avatar-wrapper{
+  background-image: url('../../../images/edit-avatar.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+}

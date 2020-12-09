@@ -1,0 +1,13 @@
+.form__input-error {
+  visibility: hidden;
+
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 1.1;
+
+  min-height: 13.2px;
+
+  color: red;
+}

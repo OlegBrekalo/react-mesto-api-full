@@ -1,0 +1,25 @@
+.element__remove-icon{
+  border: none;
+  background: transparent;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  visibility: hidden;
+  position: absolute;
+  top: 17px;
+  right: 14px;
+
+  cursor: url('https://raw.githubusercontent.com/OlegBrekalo/mesto/master/images/bttn-cursor.png'), url('../../../images/bttn-cursor.png'), pointer;
+  transition: opacity 1s linear;
+
+  background-image: url('../../../images/remove-icon.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+
+  width: 21px;
+  height: 21px;
+}
+
+.element__remove-icon:hover{
+  opacity: .5;
+}

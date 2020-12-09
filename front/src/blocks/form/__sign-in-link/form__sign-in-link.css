@@ -1,0 +1,16 @@
+.form__sign-in-link {
+  margin-top: 15px;
+  color: white;
+  text-align: center;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+
+  text-decoration: none;
+  transition: opacity 1s linear;
+}
+
+.form__sign-in-link:hover {
+  opacity: 0.5;
+}
