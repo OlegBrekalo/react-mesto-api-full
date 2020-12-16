@@ -1,14 +1,15 @@
+const createError = require('http-errors');
 const Card = require('../models/card');
 
-module.exports.getCards = (req, res) => {
+module.exports.getCards = (req, res, next) => {
   Card.find({})
     .then((data) => res.send(data))
-    .catch((err) =>
-      res.status(500).send({ message: `Ошибка чтения карточек. Error message: ${err}` })
-    );
+    .catch(() => {
+      next(createError(`Ошибка чтения карточек.`));
+    });
 };
 
-module.exports.postCard = (req, res) => {
+module.exports.postCard = (req, res, next) => {
   const { name, link } = req.body;
   const owner = req.user._id;
   Card.create({ name, link, owner })
@@ -17,64 +18,86 @@ module.exports.postCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(400).send({ message: `Ошибка валидации. Error message: ${err}` });
+        next(createError(400, `Ошибка валидации.`));
       } else {
-        res.status(500).send({ message: `Ошибка сохранения карточки. Error message: ${err}` });
+        next(createError(`Ошибка сохранения карточки.`));
       }
     });
 };
 
-module.exports.deleteCardbyID = (req, res) => {
+module.exports.deleteCardbyID = (req, res, next) => {
   const cardID = req.params.id;
-  Card.findByIdAndDelete(cardID)
+  Card.findById(cardID)
     .then((deletedCard) => {
-      if (deletedCard) {
-        res.send({ message: `Карточка ${cardID} успешно удалена.` });
-      } else {
-        res.status(404).send({ message: `Карточка для удаления не найдена.` });
+      if (!deletedCard) {
+        throw createError(404, `Карточка для удаления не найдена.`);
       }
+      if (deletedCard.owner._id.toString() !== req.user._id) {
+        throw createError(401, 'Нет прав для удаления карточки');
+      }
+      return Card.findOneAndDelete({ _id: cardID, owner: req.user._id });
+    })
+    .then((data) => {
+      res.send({ message: `Карточка ${data._id} успешно удалена.` });
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
-        res.status(404).send({ message: `Карточка для удаления не найдена.` });
-      } else {
-        res.status(500).send({ message: `Ошибка удаления карточки. Error message: ${err}` });
+      switch (err.name) {
+        case 'UnauthorizedError':
+        case 'NotFoundError':
+          next(err);
+          break;
+        case 'CastError':
+          next(createError(400, `Некоректный ID карточки.`));
+          break;
+        default:
+          next(createError(`Ошибка при удалении карточки.`));
+          break;
       }
     });
 };
 
-module.exports.putLike = (req, res) => {
+module.exports.putLike = (req, res, next) => {
   Card.findByIdAndUpdate(req.params.id, { $addToSet: { likes: req.user._id } }, { new: true })
     .then((data) => {
-      if (data) {
-        res.send({ data });
-      } else {
-        res.status(404).send({ message: `Карточка для лайка не найдена.` });
+      if (!data) {
+        throw createError(404, `Карточка для дизлайка не найдена.`);
       }
+      res.send({ data });
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
-        res.status(404).send({ message: `Карточка для лайка не найдена.` });
-      } else {
-        res.status(500).send({ message: `Ошибка лайка карточки. Error message: ${err}` });
+      switch (err.name) {
+        case 'NotFoundError':
+          next(err);
+          break;
+        case 'CastError':
+          next(createError(400, `Некорректный ID карточки.`));
+          break;
+        default:
+          next(createError(`Ошибка лайка карточки.`));
+          break;
       }
     });
 };
 
-module.exports.deleteLike = (req, res) => {
+module.exports.deleteLike = (req, res, next) => {
   Card.findByIdAndUpdate(req.params.id, { $pull: { likes: req.user._id } }, { new: true })
     .then((data) => {
-      if (data) {
-        res.send({ data });
-      } else {
-        res.status(404).send({ message: `Карточка для дизлайка не найдена.` });
+      if (!data) {
+        throw createError(404, `Карточка для дизлайка не найдена.`);
       }
+      res.send({ data });
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
-        res.status(404).send({ message: `Карточка для дизлайка не найдена.` });
-      } else {
-        res.status(500).send({ message: `Ошибка дизлайка карточки. Error message: ${err}` });
+      switch (err.name) {
+        case 'NotFoundError':
+          next(err);
+          break;
+        case 'CastError':
+          next(createError(400, `Некорректный ID карточки.`));
+          break;
+        default:
+          next(createError(`Ошибка дизлайка карточки.`));
+          break;
       }
     });
 };

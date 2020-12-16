@@ -1,47 +1,46 @@
+const createError = require('http-errors');
 const User = require('../models/user');
 
-module.exports.getUsers = (req, res) => {
+module.exports.getUsers = (req, res, next) => {
   User.find({})
     .then((data) => res.send(data))
-    .catch((err) =>
-      res.status(500).send({ message: `Ошибка чтения пользователей. Error message: ${err}` })
-    );
+    .catch(() => {
+      next(createError(`Ошибка чтения пользователей.`));
+    });
 };
 
-module.exports.getUserById = (req, res) => {
-  User.findById(req.params.id)
+const findUserByID = (id, res, next) => {
+  User.findById(id)
     .then((user) => {
-      if (user) {
-        res.send(user);
-      } else {
-        res.status(404).send({ message: `Пользователь не найден.` });
+      if (!user) {
+        throw createError(404, `Пользователь не найден.`);
       }
+      res.send(user);
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
-        res.status(404).send({ message: `Пользователь не найден.` });
-      } else {
-        res.status(500).send({ message: `Ошибка чтения пользователя. Error message: ${err}` });
+      switch (err.name) {
+        case 'NotFoundError':
+          next(err);
+          break;
+        case 'CastError':
+          next(createError(400, 'Некоректный ID пользователя'));
+          break;
+        default:
+          next(createError(`Ошибка чтения пользователя.`));
+          break;
       }
     });
 };
 
-module.exports.postUser = (req, res) => {
-  const { name, about, avatar } = req.body;
-  User.create({ name, about, avatar })
-    .then((user) => {
-      res.send({ data: user });
-    })
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        res.status(400).send({ message: `Ошибка валидации. Error message: ${err}` });
-      } else {
-        res.status(500).send({ message: `Ошибка сохранения пользователя. Error message: ${err}` });
-      }
-    });
+module.exports.getMyself = (req, res, next) => {
+  findUserByID(req.user._id, res, next);
 };
 
-module.exports.updateUserInfo = (req, res) => {
+module.exports.getUserById = (req, res, next) => {
+  findUserByID(req.params.id, res, next);
+};
+
+module.exports.updateUserInfo = (req, res, next) => {
   const { name, about } = req.body;
   User.findByIdAndUpdate(req.user._id, { name, about }, { runValidators: true, new: true })
     .then((updatedUser) => {
@@ -50,19 +49,19 @@ module.exports.updateUserInfo = (req, res) => {
     .catch((err) => {
       switch (err.name) {
         case 'ValidationError':
+          next(createError(400, 'Введенные данные не прошли валидацию'));
+          break;
         case 'CastError':
-          res.status(400).send({ message: `Ошибка валидации. Error message: ${err}` });
+          next(createError(400, `Некоректный ID пользователя.`));
           break;
         default:
-          res
-            .status(500)
-            .send({ message: `Ошибка обновлении пользователя. Error message: ${err}` });
+          next(createError(`Ошибка обновлении пользователя.`));
           break;
       }
     });
 };
 
-module.exports.updateUserAvatar = (req, res) => {
+module.exports.updateUserAvatar = (req, res, next) => {
   const { avatar } = req.body;
   User.findByIdAndUpdate(req.user._id, { avatar }, { runValidators: true, new: true })
     .then((user) => {
@@ -70,9 +69,9 @@ module.exports.updateUserAvatar = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(400).send({ message: `Ошибка валидации. Error message: ${err}` });
+        next(createError(400, `Ошибка валидации.`));
       } else {
-        res.status(500).send({ message: `Ошибка обновлении пользователя. Error message: ${err}` });
+        next(createError(`Ошибка обновлении пользователя.`));
       }
     });
 };

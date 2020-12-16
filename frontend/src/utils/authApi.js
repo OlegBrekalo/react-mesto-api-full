@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import escape from 'escape-html';
 import getResponseData from './getResponseData';
 
@@ -36,8 +37,10 @@ class AuthAPI {
     });
   }
 
+  // return fetch(`${this._url}users/me`, {
+
   validateToken(jwt) {
-    return fetch(`${this._url}users/me`, {
+    return fetch(`localhost:4000/users/me`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -49,4 +52,4 @@ class AuthAPI {
   }
 }
 
-export default new AuthAPI('https://auth.nomoreparties.co/');
+export default new AuthAPI('localhost:4000/');

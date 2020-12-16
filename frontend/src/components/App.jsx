@@ -44,7 +44,6 @@ function App() {
 
   const tokenValidate = () => {
     const jwt = localStorage.getItem('jwt');
-    console.log(loggedIn);
     if (jwt) {
       return authApi.validateToken(jwt).then((res) => {
         setCurrentUser({
@@ -82,6 +81,9 @@ function App() {
     tokenValidate()
       .then(() => {
         setloggedIn(true);
+      })
+      .catch((err) => {
+        console.log(err);
       })
       .finally(() => {
         setInit(true);
@@ -127,7 +129,7 @@ function App() {
           return { ...card, likes: cardJSON.likes };
         }
         return card;
-      }),
+      })
     );
   };
 
