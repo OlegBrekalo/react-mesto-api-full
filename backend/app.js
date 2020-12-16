@@ -11,7 +11,7 @@ const usersRoutes = require('./routes/users');
 const cardsRoutes = require('./routes/cards');
 
 const app = express();
-const { PORT = 4000 } = process.env;
+const { PORT = 3000 } = process.env;
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
