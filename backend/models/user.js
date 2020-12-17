@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const validatorLib = require('validator');
-const { defaultUser, regexURL } = require('../utils/constants');
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -20,23 +19,23 @@ const userSchema = new mongoose.Schema({
     select: false,
   },
   name: {
-    default: defaultUser.name,
     type: String,
+    default: 'Жак-Ив Кусто',
     minlength: 2,
     maxlength: 30,
   },
   about: {
-    default: defaultUser.about,
     type: String,
+    default: 'Исследователь',
     minlength: 2,
     maxlength: 30,
   },
   avatar: {
-    default: defaultUser.avatar,
     type: String,
+    default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
     validate: {
       validator(v) {
-        return regexURL.test(v);
+        return validatorLib.isURL(v);
       },
       message: (props) => `${props.value} не является валидным URL`,
     },
