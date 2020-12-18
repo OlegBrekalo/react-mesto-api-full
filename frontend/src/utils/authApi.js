@@ -37,10 +37,8 @@ class AuthAPI {
     });
   }
 
-  // return fetch(`${this._url}users/me`, {
-
   validateToken(jwt) {
-    return fetch(`localhost:4000/users/me`, {
+    return fetch(`${this._url}users/me`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -52,4 +50,4 @@ class AuthAPI {
   }
 }
 
-export default new AuthAPI('localhost:4000/');
+export default new AuthAPI('http://api.brekalo.students.nomoreparties.space/');
