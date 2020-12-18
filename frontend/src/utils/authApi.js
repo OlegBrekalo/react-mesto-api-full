@@ -58,4 +58,4 @@ class AuthAPI {
   }
 }
 
-export default new AuthAPI('http://api.brekalo.students.nomoreparties.space/');
+export default new AuthAPI('https://api.brekalo.students.nomoreparties.space/');

@@ -93,6 +93,6 @@ class Api {
   }
 }
 
-const api = new Api('http://api.brekalo.students.nomoreparties.space/');
+const api = new Api('https://api.brekalo.students.nomoreparties.space/');
 
 export default api;

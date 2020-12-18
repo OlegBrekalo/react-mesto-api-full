@@ -25,6 +25,13 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 
 app.use(requestLogger);
 
+// Self-destruct
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
+
 // Unprotected routers for Sign-up and Sign-in
 app.use('/', authRoutes);
 
