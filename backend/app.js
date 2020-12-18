@@ -1,5 +1,5 @@
-const cors = require('cors');
 const express = require('express');
+const cors = require('cors');
 const createError = require('http-errors');
 const { errors } = require('celebrate');
 const mongoose = require('mongoose');
@@ -12,6 +12,8 @@ const usersRoutes = require('./routes/users');
 const cardsRoutes = require('./routes/cards');
 
 const app = express();
+app.use(cors({ origin: true }));
+
 const { PORT = 3000 } = process.env;
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
@@ -21,12 +23,6 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   useCreateIndex: true,
 });
 
-const corsOption = {
-  origin: true,
-  // credentials: true,
-};
-
-app.use(cors(corsOption));
 app.use(requestLogger);
 
 // Unprotected routers for Sign-up and Sign-in
