@@ -69,7 +69,7 @@ function App() {
             about: userInfo.about,
             avatar: userInfo.avatar,
           });
-          setCards(initCards);
+          setCards(initCards.reverse());
         })
         .catch((err) => {
           console.log('Error on - Render Main page');
@@ -140,7 +140,7 @@ function App() {
       api
         .putLike(jwt, idCard)
         .then((cardJSON) => {
-          mapNewCards(idCard, cardJSON);
+          mapNewCards(idCard, cardJSON.data);
         })
         .catch((err) => {
           console.log('Error on - putLike');
@@ -150,7 +150,7 @@ function App() {
       api
         .removeLike(jwt, idCard)
         .then((cardJSON) => {
-          mapNewCards(idCard, cardJSON);
+          mapNewCards(idCard, cardJSON.data);
         })
         .catch((err) => {
           console.log('Error on - removeLike');
@@ -194,8 +194,8 @@ function App() {
     buttonRef.current.textContent = 'Сохраняю...';
     api
       .updateUserAvatar(jwt, newAvatar)
-      .then((data) => {
-        setCurrentUser({ ...currentUser, avatar: data.avatar });
+      .then((userInfo) => {
+        setCurrentUser({ ...currentUser, avatar: userInfo.data.avatar });
         buttonRef.current.textContent = oldButtonCaption;
         cleanUp();
         closeAllPopups();
@@ -214,7 +214,7 @@ function App() {
     api
       .addNewCard(jwt, newName, newSrc)
       .then((newCard) => {
-        setCards([newCard, ...cards]);
+        setCards([newCard.data, ...cards]);
         buttonRef.current.textContent = oldButtonCaption;
         cleanUp();
         closeAllPopups();

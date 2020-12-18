@@ -75,7 +75,7 @@ class Api {
   }
 
   putLike(jwt, cardID) {
-    return fetch(`${this._url}cards/likes/${cardID}`, {
+    return fetch(`${this._url}cards/${cardID}/likes`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${jwt}`,
@@ -84,7 +84,7 @@ class Api {
   }
 
   removeLike(jwt, cardID) {
-    return fetch(`${this._url}cards/likes/${cardID}`, {
+    return fetch(`${this._url}cards/${cardID}/likes`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${jwt}`,
