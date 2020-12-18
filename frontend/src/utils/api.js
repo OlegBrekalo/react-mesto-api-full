@@ -2,26 +2,25 @@ import escape from 'escape-html';
 import getResponseData from './getResponseData';
 
 class Api {
-  constructor(url, token) {
+  constructor(url) {
     this._url = url;
-    this._token = token;
   }
 
-  getUserInfo() {
+  getUserInfo(jwt) {
     return fetch(`${this._url}users/me`, {
       method: 'GET',
       headers: {
-        authorization: this._token,
+        Authorization: `Bearer ${jwt}`,
       },
     }).then((res) => getResponseData(res));
   }
 
-  updateUserInfo(newName, newAbout) {
+  updateUserInfo(jwt, newName, newAbout) {
     return fetch(`${this._url}users/me`, {
       method: 'PATCH',
       headers: {
-        authorization: this._token,
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwt}`,
       },
       body: JSON.stringify({
         name: escape(newName),
@@ -30,12 +29,12 @@ class Api {
     }).then((res) => getResponseData(res));
   }
 
-  updateUserAvatar(newAvatar) {
+  updateUserAvatar(jwt, newAvatar) {
     return fetch(`${this._url}users/me/avatar`, {
       method: 'PATCH',
       headers: {
-        authorization: this._token,
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwt}`,
       },
       body: JSON.stringify({
         avatar: escape(newAvatar),
@@ -43,21 +42,21 @@ class Api {
     }).then((res) => getResponseData(res));
   }
 
-  getCards() {
+  getCards(jwt) {
     return fetch(`${this._url}cards`, {
       method: 'GET',
       headers: {
-        authorization: this._token,
+        Authorization: `Bearer ${jwt}`,
       },
     }).then((res) => getResponseData(res));
   }
 
-  addNewCard(cardName, cardLink) {
+  addNewCard(jwt, cardName, cardLink) {
     return fetch(`${this._url}cards`, {
       method: 'POST',
       headers: {
-        authorization: this._token,
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwt}`,
       },
       body: JSON.stringify({
         name: escape(cardName),
@@ -66,37 +65,34 @@ class Api {
     }).then((res) => getResponseData(res));
   }
 
-  deleteCard(cardID) {
+  deleteCard(jwt, cardID) {
     return fetch(`${this._url}cards/${cardID}`, {
       method: 'DELETE',
       headers: {
-        authorization: this._token,
+        Authorization: `Bearer ${jwt}`,
       },
     }).then((res) => getResponseData(res));
   }
 
-  putLike(cardID) {
+  putLike(jwt, cardID) {
     return fetch(`${this._url}cards/likes/${cardID}`, {
       method: 'PUT',
       headers: {
-        authorization: this._token,
+        Authorization: `Bearer ${jwt}`,
       },
     }).then((res) => getResponseData(res));
   }
 
-  removeLike(cardID) {
+  removeLike(jwt, cardID) {
     return fetch(`${this._url}cards/likes/${cardID}`, {
       method: 'DELETE',
       headers: {
-        authorization: this._token,
+        Authorization: `Bearer ${jwt}`,
       },
     }).then((res) => getResponseData(res));
   }
 }
 
-const api = new Api(
-  'https://mesto.nomoreparties.co/v1/cohort-15/',
-  '00e3d586-abb9-483a-af25-8c5b37844ed8',
-);
+const api = new Api('http://api.brekalo.students.nomoreparties.space/');
 
 export default api;

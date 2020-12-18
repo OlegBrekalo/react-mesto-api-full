@@ -9,7 +9,7 @@ function Card({ id, name, link, likes, owner, onClick, onLike, onDelete }) {
   const isLiked = likes.some((like) => like._id === currentUser.id);
 
   const removeIconStyle =
-    currentUser.id === owner._id
+    currentUser.id === owner
       ? 'element__remove-icon  element__remove-icon_show'
       : 'element__remove-icon';
   const likeIconStyle = isLiked
@@ -64,7 +64,7 @@ Card.propTypes = {
   name: PropTypes.string,
   link: PropTypes.string,
   likes: PropTypes.arrayOf(PropTypes.instanceOf(Object)),
-  owner: PropTypes.instanceOf(Object).isRequired,
+  owner: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   onLike: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,

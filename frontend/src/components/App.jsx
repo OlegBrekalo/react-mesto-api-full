@@ -47,8 +47,8 @@ function App() {
     if (jwt) {
       return authApi.validateToken(jwt).then((res) => {
         setCurrentUser({
-          id: res.data._id,
-          email: res.data.email,
+          id: res._id,
+          email: res.email,
         });
         setloggedIn(true);
       });
@@ -58,10 +58,10 @@ function App() {
 
   useEffect(() => {
     if (loggedIn) {
-      Promise.all([api.getUserInfo(), api.getCards()])
+      const jwt = localStorage.getItem('jwt');
+      Promise.all([api.getUserInfo(jwt), api.getCards(jwt)])
         .then((data) => {
           const [userInfo, initCards] = data;
-          setCards(initCards);
           setCurrentUser({
             ...currentUser,
             id: userInfo._id,
@@ -69,6 +69,7 @@ function App() {
             about: userInfo.about,
             avatar: userInfo.avatar,
           });
+          setCards(initCards);
         })
         .catch((err) => {
           console.log('Error on - Render Main page');
@@ -134,9 +135,10 @@ function App() {
   };
 
   const handleCardLike = (isAlreadyLike, idCard) => {
+    const jwt = localStorage.getItem('jwt');
     if (!isAlreadyLike) {
       api
-        .putLike(idCard)
+        .putLike(jwt, idCard)
         .then((cardJSON) => {
           mapNewCards(idCard, cardJSON);
         })
@@ -146,7 +148,7 @@ function App() {
         });
     } else {
       api
-        .removeLike(idCard)
+        .removeLike(jwt, idCard)
         .then((cardJSON) => {
           mapNewCards(idCard, cardJSON);
         })
@@ -164,16 +166,17 @@ function App() {
 
   // #region Forms Submit Handlers
   const handleUpdateUserProfile = (name, about, ref) => {
+    const jwt = localStorage.getItem('jwt');
     const oldButtonCaption = ref.current.textContent;
     const buttonRef = ref;
     buttonRef.current.textContent = 'Сохраняю...';
     api
-      .updateUserInfo(name, about)
+      .updateUserInfo(jwt, name, about)
       .then((userInfo) => {
         setCurrentUser({
           ...currentUser,
-          name: userInfo.name,
-          about: userInfo.about,
+          name: userInfo.data.name,
+          about: userInfo.data.about,
         });
         buttonRef.current.textContent = oldButtonCaption;
         closeAllPopups();
@@ -185,11 +188,12 @@ function App() {
   };
 
   const handleUpdateUserAvatar = (newAvatar, ref, cleanUp) => {
+    const jwt = localStorage.getItem('jwt');
     const oldButtonCaption = ref.current.textContent;
     const buttonRef = ref;
     buttonRef.current.textContent = 'Сохраняю...';
     api
-      .updateUserAvatar(newAvatar)
+      .updateUserAvatar(jwt, newAvatar)
       .then((data) => {
         setCurrentUser({ ...currentUser, avatar: data.avatar });
         buttonRef.current.textContent = oldButtonCaption;
@@ -203,11 +207,12 @@ function App() {
   };
 
   const handleAddPlaceSubmit = (newName, newSrc, ref, cleanUp) => {
+    const jwt = localStorage.getItem('jwt');
     const oldButtonCaption = ref.current.textContent;
     const buttonRef = ref;
     buttonRef.current.textContent = 'Создаю...';
     api
-      .addNewCard(newName, newSrc)
+      .addNewCard(jwt, newName, newSrc)
       .then((newCard) => {
         setCards([newCard, ...cards]);
         buttonRef.current.textContent = oldButtonCaption;
@@ -221,11 +226,12 @@ function App() {
   };
 
   const handleRemovePlaceSubmit = (ref) => {
+    const jwt = localStorage.getItem('jwt');
     const oldButtonCaption = ref.current.textContent;
     const buttonRef = ref;
     buttonRef.current.textContent = 'Удаляю...';
     api
-      .deleteCard(cardIdPrepareForRemove)
+      .deleteCard(jwt, cardIdPrepareForRemove)
       .then(() => {
         setCards(cards.filter((card) => card._id !== cardIdPrepareForRemove));
         buttonRef.current.textContent = oldButtonCaption;

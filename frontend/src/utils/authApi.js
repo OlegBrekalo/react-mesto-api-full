@@ -13,6 +13,8 @@ class AuthAPI {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Accept: '*/*',
+        Connection: 'keep-alive',
       },
       body: JSON.stringify({
         email: escape(email),
@@ -30,6 +32,8 @@ class AuthAPI {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Accept: '*/*',
+        Connection: 'keep-alive',
       },
       body: JSON.stringify({
         email: escape(email),
