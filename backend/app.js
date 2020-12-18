@@ -22,8 +22,8 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 });
 
 const corsOption = {
-  origin: false,
-  // credentials: true,
+  origin: true,
+  credentials: true,
 };
 
 app.use(cors(corsOption));
