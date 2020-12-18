@@ -8,6 +8,7 @@ class AuthAPI {
   }
 
   signUp(email, password) {
+    console.log(`${this._url}signin`);
     return fetch(`${this._url}signup`, {
       method: 'POST',
       headers: {
@@ -18,11 +19,13 @@ class AuthAPI {
         password: escape(password),
       }),
     }).then((res) => {
+      console.log(res);
       return getResponseData(res);
     });
   }
 
   signIn(email, password) {
+    console.log(`${this._url}signin`);
     return fetch(`${this._url}signin`, {
       method: 'POST',
       headers: {
@@ -33,6 +36,7 @@ class AuthAPI {
         password: escape(password),
       }),
     }).then((res) => {
+      console.log(res);
       return getResponseData(res);
     });
   }
