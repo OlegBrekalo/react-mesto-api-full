@@ -14,6 +14,10 @@ module.exports.createUser = (req, res, next) => {
       res.send({ data: user });
     })
     .catch((err) => {
+      if (err.message.startsWith('E11000 duplicate key')) {
+        next(createError(409, `Такой email уже зарегистрирован. Err = ${err}`));
+      }
+
       if (err.name === 'ValidationError') {
         next(createError(400, `Ошибка валидации. Err = ${err}`));
       } else {
